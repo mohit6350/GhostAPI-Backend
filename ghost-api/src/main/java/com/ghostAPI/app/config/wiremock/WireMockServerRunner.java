@@ -1,31 +1,34 @@
 package com.ghostAPI.app.config.wiremock;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class WireMockServerRunner {
 
-    public static void main(String[] args) {
+    public static void startWireMock() {
         try {
-            runExternalJar("wiremock/wiremock-standalone-3.3.1.jar");
-        } catch (IOException | InterruptedException e) {
+            ClassLoader classLoader = WireMockServerRunner.class.getClassLoader();
+            URL resourceUrl = classLoader.getResource("wiremock/wiremock.jar");
+
+            if (resourceUrl == null) {
+                System.err.println("WireMock JAR file not found in resources.");
+                return;
+            }
+
+            File jarFile = Paths.get(resourceUrl.toURI()).toFile();
+            String jarFilePath = jarFile.getAbsolutePath();
+
+            ProcessBuilder processBuilder = new ProcessBuilder("java", "-jar", "wiremock.jar");
+            processBuilder.directory(jarFile.getParentFile());
+            processBuilder.inheritIO();
+
+            Process process = processBuilder.start();
+            int exitCode = process.waitFor();
+            System.out.println("WireMock process exited with code: " + exitCode);
+        } catch (IOException | InterruptedException | NullPointerException | java.net.URISyntaxException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void runExternalJar(String jarPath) throws IOException, InterruptedException {
-        // Construct the command line with "java -jar" and the JAR path
-        String[] command = {"java", "-jar", jarPath};
-
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
-
-        // Redirecting error stream to standard output
-        processBuilder.redirectErrorStream(true);
-
-        Process process = processBuilder.start();
-
-        // Wait for the process to finish
-        int exitCode = process.waitFor();
-
-        System.out.println("External JAR process exited with code: " + exitCode);
     }
 }
