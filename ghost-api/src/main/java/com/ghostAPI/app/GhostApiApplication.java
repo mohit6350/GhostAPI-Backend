@@ -16,7 +16,7 @@ public class GhostApiApplication {
 		ConfigurableApplicationContext context = SpringApplication.run(GhostApiApplication.class, args);
 
 		// Start WireMock server
-		WireMockServerRunner.startWireMock();
+		//WireMockServerRunner.startWireMock();
 
 		// Gracefully handle shutdown
 		context.getBean(ThreadPoolTaskExecutor.class).execute(() -> {
@@ -29,9 +29,12 @@ public class GhostApiApplication {
 			context.close(); // Close Spring Boot application
 			WireMockServerRunner.stopWireMock(); // Stop WireMock
 			System.out.println("Application and WireMock server stopped gracefully.");
-			System.exit(0);
+			//System.exit(0);
 		});
+
+
 	}
+
 
 	@Bean
 	public ThreadPoolTaskExecutor taskExecutor() {
@@ -42,4 +45,6 @@ public class GhostApiApplication {
 		executor.initialize();
 		return executor;
 	}
+
+
 }
