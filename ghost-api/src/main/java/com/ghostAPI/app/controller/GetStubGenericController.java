@@ -1,6 +1,7 @@
 package com.ghostAPI.app.controller;
 
 import com.ghostAPI.app.config.WiremockPostStubGenerator;
+import com.ghostAPI.app.serviceImpl.WireMockGetStubServiceImpl;
 import com.ghostAPI.app.serviceImpl.WireMockPostStubServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/generic-mapping")
-public class PostStubGenericController {
+public class GetStubGenericController {
 
     @Autowired
     private WiremockPostStubGenerator wireMockStubGenerator;
@@ -20,7 +21,10 @@ public class PostStubGenericController {
     @Autowired
     private WireMockPostStubServiceImpl wireMockStubService;
 
-    @PostMapping("/generate-post-stub")
+    @Autowired
+    private WireMockGetStubServiceImpl wireMockGetStubService;
+
+    @PostMapping("/generate-get-stub")
     public ResponseEntity<String> generateStub(@RequestBody String requestBody) {
         try {
             // Generate WireMock stub based on the provided JSON
@@ -34,4 +38,5 @@ public class PostStubGenericController {
             return new ResponseEntity<>("Error generating WireMock stub", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
