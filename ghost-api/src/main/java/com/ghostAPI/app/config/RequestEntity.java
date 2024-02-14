@@ -2,6 +2,8 @@ package com.ghostAPI.app.config;
 
 import jakarta.persistence.*;
 
+import java.util.Map;
+
 @Entity
 @Table(name = "request")
 public class RequestEntity {

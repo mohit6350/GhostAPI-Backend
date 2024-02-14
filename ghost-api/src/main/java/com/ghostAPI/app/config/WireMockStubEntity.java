@@ -9,7 +9,7 @@ public class WireMockStubEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "TEXT", length = 10485760)
+    @Column(columnDefinition = "TEXT", length = 1048576000)
     private String jsonBody;
 
     public Long getId() {
